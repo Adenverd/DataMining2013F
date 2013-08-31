@@ -1,0 +1,8 @@
+bin/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+
+.DS_Store
