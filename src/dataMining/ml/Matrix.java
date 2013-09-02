@@ -1,4 +1,4 @@
-package dataMining.starter;
+package dataMining.ml;
 
 import java.util.HashMap;
 import java.util.Iterator;
