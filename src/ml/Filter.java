@@ -5,6 +5,10 @@ import dataMining.ml.Matrix;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Wraps another supervised learner. It applies some unsupervised operation
+ * to the data before presenting it to the learner.
+ */
 public class Filter extends SupervisedLearner {
 
     private SupervisedLearner pLearner;
@@ -12,6 +16,12 @@ public class Filter extends SupervisedLearner {
     private boolean filterInputs;
     private List<Double> buffer;
 
+    /**
+     * 	This takes ownership of pLearner and pTransform.
+     * @param filterInputs if true, it applies the transform only the the input features.
+     *                     if false, it applies the transform only the the output labels
+     *                     (If you wish to transform both inputs and outputs, you must wrap a filter in a filter)
+     */
     public Filter(SupervisedLearner pLearner, UnsupervisedLearner pTransform, boolean filterInputs) {
         this.pLearner = pLearner;
         this.pTransform = pTransform;
@@ -19,6 +29,9 @@ public class Filter extends SupervisedLearner {
         this.buffer = new Vector<Double>();
     }
 
+    /**
+     * Trains the transform and the inner learner.
+     */
     @Override
     public void train(Matrix features, Matrix labels) {
         if (features.getRows() != labels.getRows()) {
@@ -34,6 +47,9 @@ public class Filter extends SupervisedLearner {
         }
     }
 
+    /**
+     * Makes a prediction.
+     */
     @Override
     public void predict(List<Double> in, List<Double> out) {
         if (filterInputs) {
