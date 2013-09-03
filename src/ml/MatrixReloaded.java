@@ -12,7 +12,7 @@ public class MatrixReloaded {
     //Meta-data
     private int numCols;
     private int numRows;
-    private Map<Integer, CategoricalAttributes> categoricalAttributes; //maps column index to categorical attributes
+    private Map<Integer, ColumnAttributes> columnAttributes; //maps column index to categorical attributes
 
     public int getNumCols(){
         return numCols;
@@ -38,11 +38,6 @@ public class MatrixReloaded {
     }
 
     /**
-     * Not implemented yet, needs design.
-     */
-
-
-    /**
      * Appends a row to the end of the matrix
      * @param row
      */
@@ -62,16 +57,12 @@ public class MatrixReloaded {
         numRows++;
     }
 
-    public void addContinuousColumn(){
-        numCols++;
-    }
-
-    public void addCategoricalColumn(CategoricalAttributes attributes){
+    public void addColumn(ColumnAttributes attributes){
         if (!data.isEmpty()){
             throw new UnsupportedOperationException("Cannot add a column to a matrix that contains rows");
         }
 
-        categoricalAttributes.put(numCols, attributes);
+        columnAttributes.put(numCols, attributes);
 
         //numCols needs to be incremented AFTER putting the attributes
         numCols++;
@@ -93,6 +84,18 @@ public class MatrixReloaded {
      */
     public List<Double> getRow(int row){
         return data.get(row);
+    }
+
+    public ColumnType getColumnType(int col){
+        return columnAttributes.get(col).getColumnType();
+    }
+
+    public boolean isCategorical(int col){
+        return columnAttributes.get(col).getColumnType()==ColumnType.Categorical;
+    }
+
+    public boolean isContinuous(int col){
+        return columnAttributes.get(col).getColumnType()==ColumnType.Continuous;
     }
 
 }
