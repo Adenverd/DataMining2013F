@@ -265,7 +265,7 @@ public class MatrixReloaded {
         for (int i = 0; i < getNumRows(); i++) {
             List<Double> row = getRow(i);
             for (int j = 0; j < getNumCols(); j++) {
-                System.out.print(row.get(j));
+                System.out.print(row.get(j) + ", ");
             }
             System.out.println();
         }
