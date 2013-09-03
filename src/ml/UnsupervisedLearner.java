@@ -1,7 +1,5 @@
 package ml;
 
-import dataMining.ml.Matrix;
-
 import java.util.List;
 
 public abstract class UnsupervisedLearner {
