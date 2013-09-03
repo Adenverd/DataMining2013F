@@ -1,5 +1,6 @@
 package ml;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,7 +15,6 @@ public class Filter extends SupervisedLearner {
     private SupervisedLearner pLearner;
     private UnsupervisedLearner pTransform;
     private boolean filterInputs;
-    private List<Double> buffer;
 
     /**
      * 	This takes ownership of pLearner and pTransform.
@@ -26,7 +26,6 @@ public class Filter extends SupervisedLearner {
         this.pLearner = pLearner;
         this.pTransform = pTransform;
         this.filterInputs = filterInputs;
-        this.buffer = new Vector<Double>();
     }
 
     /**
@@ -51,13 +50,11 @@ public class Filter extends SupervisedLearner {
      * Makes a prediction.
      */
     @Override
-    public void predict(List<Double> in, List<Double> out) {
+    public List<Double> predict(List<Double> in) {
         if (filterInputs) {
-            pTransform.transform(in, buffer);
-            pLearner.predict(buffer, out);
+            return pLearner.predict(pTransform.transform(in));
         } else {
-            pLearner.predict(in, buffer);
-            pTransform.untransform(buffer, out);
+            return pTransform.untransform(pLearner.predict(in));
         }
     }
 
@@ -68,7 +65,7 @@ public class Filter extends SupervisedLearner {
         matrix.newRows(data.getRows());
 
         for (int i = 0; i < data.getRows(); i++) {
-            pTransform.transform(data.row(i), matrix.row(i));
+            pTransform.transform(data.getRow(i), matrix.getRow(i));
         }
         return matrix;
     }

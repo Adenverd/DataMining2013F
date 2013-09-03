@@ -1,5 +1,6 @@
 package ml;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -30,32 +31,35 @@ public class Imputer extends UnsupervisedLearner {
     /**
      * Replaces missing values with the centroid value.
      * @param in Features
-     * @param  out Empty list
      */
     @Override
-    public void transform(List<Double> in, List<Double> out) {
+    public List<Double> transform(List<Double> in) {
         if (in.size() != centroid.size()) {
             throw new MLException(String.format(
                     "Unexpected in-vector size. Expected: %d, Got: %d", centroid.size(), in.size()));
         }
+        List<Double> out = new ArrayList<Double>();
         for (int i = 0; i < centroid.size(); i++) {
             double value = in.get(i) == Matrix.UNKNOWN_VALUE ? centroid.get(i) : in.get(i);
             out.add(value);
         }
+        return out;
     }
 
     /**
      * Copy in to out. (In other words, this is a no-op).
      */
     @Override
-    public void untransform(List<Double> in, List<Double> out) {
+    public List<Double> untransform(List<Double> in) {
         if (in.size() != centroid.size()) {
             throw new MLException(String.format(
                     "Unexpected in-vector size. Expected: %d, Got: %d", centroid.size(), in.size()));
         }
+        List<Double> out = new ArrayList<Double>();
         for (int i = 0; i < centroid.size(); i++) {
             out.add(in.get(i));
         }
+        return out;
     }
 
     /**

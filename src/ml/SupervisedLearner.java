@@ -10,5 +10,5 @@ public abstract class SupervisedLearner {
 
     public abstract void train(Matrix features, Matrix labels);
 
-    public abstract void predict(List<Double> in, List<Double> out);
+    public abstract List<Double> predict(List<Double> in);
 }

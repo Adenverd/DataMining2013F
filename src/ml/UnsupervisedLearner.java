@@ -12,7 +12,7 @@ public abstract class UnsupervisedLearner {
 
     public abstract Matrix outputTemplate();
 
-    public abstract void transform(List<Double> in, List<Double> out);
+    public abstract List<Double> transform(List<Double> in);
 
-    public abstract void untransform(List<Double> in, List<Double> out);
+    public abstract List<Double> untransform(List<Double> in);
 }

@@ -1,7 +1,9 @@
 package ml;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class MatrixReloaded {
 
@@ -27,14 +29,6 @@ public class MatrixReloaded {
         data = new ArrayList<List<Double>>();
     }
 
-    public void loadARFF(String filepath){
-        throw new UnsupportedOperationException("Not Implemented");
-    }
-
-    public void saveARFF(String filepath){
-        throw new UnsupportedOperationException("Not Implemented");
-    }
-
     /**
      * Not implemented yet, needs design.
      */
@@ -46,7 +40,7 @@ public class MatrixReloaded {
      * Appends a row to the end of the matrix
      * @param row
      */
-    public void addRow(ArrayList<Double> row){
+    public void addRow(List<Double> row){
         throw new UnsupportedOperationException("Not Implemented");
     }
 
@@ -74,8 +68,6 @@ public class MatrixReloaded {
     public List<Double> getRow(int row){
         throw new UnsupportedOperationException("Not Implemented");
     }
-
-
 
 
 }

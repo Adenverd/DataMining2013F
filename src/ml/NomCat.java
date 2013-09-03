@@ -1,5 +1,6 @@
 package ml;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,11 +33,12 @@ public class NomCat extends UnsupervisedLearner {
      * distribution of continuous values.
      */
     @Override
-    public void transform(List<Double> in, List<Double> out) {
+    public List<Double> transform(List<Double> in) {
         if (in.size() != values.size()) {
             throw new MLException(String.format(
                     "Unexpected in-vector size. Expected: %d, Got: %d", values.size(), in.size()));
         }
+        List<Double> out = new ArrayList<Double>();
         for (int i = 0; i < in.size(); i++) {
             if (values.get(i) == 1) {
                 out.add(in.get(i));
@@ -55,17 +57,19 @@ public class NomCat extends UnsupervisedLearner {
                 }
             }
         }
+        return out;
     }
 
     /**
      * Re-encodes categorical distribution as nominal values by finding the mode.
      */
     @Override
-    public void untransform(List<Double> in, List<Double> out) {
+    public List<Double> untransform(List<Double> in) {
         if (in.size() != template.getCols()) {
             throw new MLException(String.format(
                     "Unexpected in-vector size. Expected %d, Got: %d", template.getCols(), in.size()));
         }
+        List<Double> out = new ArrayList<Double>();
         int inStart = 0;
         for (int i = 0; i < values.size(); i++) {
             if  (values.get(i) == 1) {
@@ -82,6 +86,7 @@ public class NomCat extends UnsupervisedLearner {
                 out.add((double) maxIndex);
             }
         }
+        return out;
     }
 
     /**

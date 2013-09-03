@@ -1,5 +1,6 @@
 package ml;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import static java.lang.Math.max;
@@ -36,11 +37,12 @@ public class Normalizer extends UnsupervisedLearner {
      * Normalizes continuous features.
      */
     @Override
-    public void transform(List<Double> in, List<Double> out) {
+    public List<Double> transform(List<Double> in) {
         if (in.size() != inputMins.size()) {
             throw new MLException(String.format(
                     "Unexpected in-vector size. Expected: %d, Got: %d", inputMins.size(), in.size()));
         }
+        List<Double> out = new ArrayList<Double>();
         for (int i = 0; i < in.size(); i++) {
             if (inputMins.get(i) == Matrix.UNKNOWN_VALUE) {
                 out.add(in.get(i));
@@ -53,17 +55,19 @@ public class Normalizer extends UnsupervisedLearner {
                 }
             }
         }
+        return out;
     }
 
     /**
      * De-normalizes continuous values.
      */
     @Override
-    public void untransform(List<Double> in, List<Double> out) {
+    public List<Double> untransform(List<Double> in) {
         if (in.size() != inputMins.size()) {
             throw new MLException(String.format(
                     "Unexpected in-vector size. Expected: %d, Got: %d", inputMins.size(), in.size()));
         }
+        List<Double> out = new ArrayList<Double>();
         for (int i = 0; i < in.size(); i++) {
             if (inputMins.get(i) == Matrix.UNKNOWN_VALUE) {
                 out.add(in.get(i));
@@ -76,6 +80,7 @@ public class Normalizer extends UnsupervisedLearner {
                 }
             }
         }
+        return out;
     }
 
     /**
