@@ -1,10 +1,7 @@
 package ml;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MatrixReloaded {
 
@@ -109,6 +106,11 @@ public class MatrixReloaded {
         return data.get(row);
     }
 
+    /**
+     * Returns the attributes of column col
+     * @param col
+     * @return
+     */
     public ColumnAttributes getColumnAttributes(int col){
         return columnAttributes.get(col);
     }
@@ -157,7 +159,98 @@ public class MatrixReloaded {
         return sum / count;
     }
 
+/**
+     * Returns the min elements in the specified column
+     * (Elements with the value UNKNOWN_VALUE are ignored.)
+     * If no elements in a column have a value, returns
+     * UNKNOWN_VALUE
+     *
+     * @param col
+     */
+    public Double columnMin(int col) {
+        if (!isContinuous(col)){
+            throw new MLException("Cannot calculate the min of a non-continuous column");
+        }
+        boolean allUnknownValues = true;
+        Double min = Double.MAX_VALUE;
+        for (List<Double> row : data) {
+            double val = row.get(col);
+            if (val != UNKNOWN_VALUE) {
+                allUnknownValues = false;
+                min = min < val ? min : val;
+            }
+        }
+        if(allUnknownValues){
+            return UNKNOWN_VALUE;
+        }
+        return min;
+    }
 
+    /**
+     * Returns the max elements in the specified column.
+     * (Elements with the value UNKNOWN_VALUE are ignored.)
+     * If no element in the column has a value, returns
+     * UNKNOWN_VALUE.
+     *
+     * @param col
+     */
+    public Double columnMax(int col) {
+        if(!isContinuous(col)){
+            throw new MLException("Cannot calculate the max of a non-continuous column");
+        }
+        boolean allUnknownValues = true;
+        Double min = Double.MIN_VALUE;
+        for (List<Double> row : data) {
+            double val = row.get(col);
+            if (val != UNKNOWN_VALUE) {
+                allUnknownValues = false;
+                min = min > val ? min : val;
+            }
+        }
+        if(allUnknownValues){
+            return UNKNOWN_VALUE;
+        }
+        return min;
+    }
+
+    /**
+     * Returns the most common value in the specified column.
+     * (Elements with the value UNKNOWN_VALUE are ignored.)
+     * If all elements are UNKNOWN_VALUE, returns UNKNOWN_VALUE.
+     * @param col
+     * @return
+     */
+    public Double mostCommonValue(int col){
+        boolean allUnknownValues = true;
+        Map<Double, Integer> frequencies = new HashMap<Double, Integer>();
+        for (List<Double> row : data) {
+            double val = row.get(col);
+
+            if(val!=UNKNOWN_VALUE){
+                allUnknownValues = false;
+                if(frequencies.containsKey(val)){
+                    frequencies.put(val, frequencies.get(val)+1);
+                }
+                else{
+                    frequencies.put(val, 1);
+                }
+            }
+        }
+
+        if(allUnknownValues){
+            return UNKNOWN_VALUE;
+        }
+
+        Set<Double> keySet = frequencies.keySet();
+        Double mostCommonValue = UNKNOWN_VALUE;
+        int highestFrequency = 0;
+
+        for (Double key : keySet) {
+            int val = frequencies.get(key);
+            mostCommonValue = val > highestFrequency ? val : mostCommonValue;
+        }
+        return mostCommonValue;
+    }
     public void printMatrix() {
 
         // Stuffz
@@ -177,5 +270,119 @@ public class MatrixReloaded {
             System.out.println();
         }
     }
+}<<<<<<< .mine    public void printMatrix() {
 
-}
+        // Stuffz
+        System.out.println(columnAttributes);
+
+        // Column names
+        for (int i = 0; i < columnAttributes.size(); i++) {
+            System.out.print(columnAttributes.get(i).getName());
+        }
+        System.out.println();
+
+        for (int i = 0; i < getNumRows(); i++) {
+            List<Double> row = getRow(i);
+            for (int j = 0; j < getNumCols(); j++) {
+                System.out.print(row.get(j));
+            }
+            System.out.println();
+        }
+    }
+
+=======     * Returns the min elements in the specified column
+     * (Elements with the value UNKNOWN_VALUE are ignored.)
+     * If no elements in a column have a value, returns
+     * UNKNOWN_VALUE
+     *
+     * @param col
+     */
+    public Double columnMin(int col) {
+        if (!isContinuous(col)){
+            throw new MLException("Cannot calculate the min of a non-continuous column");
+        }
+        boolean allUnknownValues = true;
+        Double min = Double.MAX_VALUE;
+        for (List<Double> row : data) {
+            double val = row.get(col);
+            if (val != UNKNOWN_VALUE) {
+                allUnknownValues = false;
+                min = min < val ? min : val;
+            }
+        }
+        if(allUnknownValues){
+            return UNKNOWN_VALUE;
+        }
+        return min;
+    }
+
+    /**
+     * Returns the max elements in the specified column.
+     * (Elements with the value UNKNOWN_VALUE are ignored.)
+     * If no element in the column has a value, returns
+     * UNKNOWN_VALUE.
+     *
+     * @param col
+     */
+    public Double columnMax(int col) {
+        if(!isContinuous(col)){
+            throw new MLException("Cannot calculate the max of a non-continuous column");
+        }
+        boolean allUnknownValues = true;
+        Double min = Double.MIN_VALUE;
+        for (List<Double> row : data) {
+            double val = row.get(col);
+            if (val != UNKNOWN_VALUE) {
+                allUnknownValues = false;
+                min = min > val ? min : val;
+            }
+        }
+        if(allUnknownValues){
+            return UNKNOWN_VALUE;
+        }
+        return min;
+    }
+
+    /**
+     * Returns the most common value in the specified column.
+     * (Elements with the value UNKNOWN_VALUE are ignored.)
+     * If all elements are UNKNOWN_VALUE, returns UNKNOWN_VALUE.
+     * @param col
+     * @return
+     */
+    public Double mostCommonValue(int col){
+        boolean allUnknownValues = true;
+        Map<Double, Integer> frequencies = new HashMap<Double, Integer>();
+        for (List<Double> row : data) {
+            double val = row.get(col);
+
+            if(val!=UNKNOWN_VALUE){
+                allUnknownValues = false;
+                if(frequencies.containsKey(val)){
+                    frequencies.put(val, frequencies.get(val)+1);
+                }
+                else{
+                    frequencies.put(val, 1);
+                }
+            }
+        }
+
+        if(allUnknownValues){
+            return UNKNOWN_VALUE;
+        }
+
+        Set<Double> keySet = frequencies.keySet();
+        Double mostCommonValue = UNKNOWN_VALUE;
+        int highestFrequency = 0;
+
+        for (Double key : keySet) {
+            int val = frequencies.get(key);
+            mostCommonValue = val > highestFrequency ? val : mostCommonValue;
+        }
+        return mostCommonValue;
+    }
+
+
+
+
+>>>>>>> .theirs}
