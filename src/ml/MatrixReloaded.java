@@ -1,6 +1,7 @@
 package ml;
 
 import java.util.*;
+import ml.ColumnAttributes.ColumnType;
 
 public class MatrixReloaded {
 
@@ -114,7 +115,7 @@ public class MatrixReloaded {
      * @param col
      */
     public boolean isCategorical(int col) {
-        return getColumnType(col) == ColumnType.Categorical;
+        return getColumnType(col) == ColumnType.CATEGORICAL;
     }
 
     /**
@@ -123,7 +124,7 @@ public class MatrixReloaded {
      * @param col
      */
     public boolean isContinuous(int col) {
-        return getColumnType(col) == ColumnType.Continuous;
+        return getColumnType(col) == ColumnType.CONTINUOUS;
     }
 
     public Double columnMean(int col) {

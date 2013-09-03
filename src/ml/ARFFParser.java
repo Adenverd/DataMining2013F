@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import ml.ColumnAttributes.ColumnType;
 
 // TODO: Redo this class without Scanner
 public class ARFFParser {
@@ -72,10 +73,10 @@ public class ARFFParser {
         String name = sp[1], type = sp[2];
 
         if (type.equals(NUMERIC) || type.equals(REAL)) {
-            ColumnAttributes column = new ColumnAttributes(name, ColumnType.Continuous);
+            ColumnAttributes column = new ColumnAttributes(name, ColumnType.CONTINUOUS);
             matrix.addColumn(column);
         } else if (type.startsWith("{") && type.endsWith("}")) {
-            ColumnAttributes column = new ColumnAttributes(name, ColumnType.Categorical);
+            ColumnAttributes column = new ColumnAttributes(name, ColumnType.CATEGORICAL);
             type = type.substring(1, type.length() - 1);
             String[] values = type.split(",");
             for (int i = 0; i < values.length; i++) {
