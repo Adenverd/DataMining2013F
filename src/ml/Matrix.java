@@ -199,10 +199,18 @@ public class Matrix {
      * Returns the number of values associated with the specified attribute (or column)
      * 0=continuous, 2=binary, 3=trinary, etc
      *
-     * @param attr
+     * @param column
      */
-    public int valueCount(int attr) {
-        return enum_to_str.get(attr).size();
+    public int valueCount(int column) {
+        return enum_to_str.get(column).size();
+    }
+
+    public boolean isContinuous(int column) {
+        return valueCount(column) == 0;
+    }
+
+    public boolean isNominal(int column) {
+        return valueCount(column) > 0;
     }
 
     /**
