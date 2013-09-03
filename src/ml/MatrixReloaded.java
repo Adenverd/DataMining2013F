@@ -109,6 +109,10 @@ public class MatrixReloaded {
         return data.get(row);
     }
 
+    public ColumnAttributes getColumnAttributes(int col){
+        return columnAttributes.get(col);
+    }
+
     /**
      * Returns the type of column col
      * @param col
