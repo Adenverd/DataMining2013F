@@ -59,7 +59,7 @@ public class Filter extends SupervisedLearner {
     }
 
     private Matrix trainAndTransform(Matrix data) {
-        pTransform.train(data);
+        /*pTransform.train(data);
         Matrix matrix = new Matrix();
         matrix.copyMetaData(pTransform.outputTemplate());
         matrix.newRows(data.getRows());
@@ -67,6 +67,7 @@ public class Filter extends SupervisedLearner {
         for (int i = 0; i < data.getRows(); i++) {
             pTransform.transform(data.getRow(i), matrix.getRow(i));
         }
-        return matrix;
+        return matrix;*/
+        return null;
     }
 }
