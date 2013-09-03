@@ -1,7 +1,5 @@
 package ml;
 
-import dataMining.ml.Matrix;
-
 import java.util.List;
 import java.util.Vector;
 
