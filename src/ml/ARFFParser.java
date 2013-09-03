@@ -17,6 +17,7 @@ public class ARFFParser {
 
     private static final String ATTRIBUTE = "@attribute";
     private static final String DATA = "@data";
+    private static final String RELATION = "@relation";
     private static final String COMMENT = "%";
     private static final String NUMERIC = "NUMERIC";
     private static final String REAL = "REAL";
@@ -40,7 +41,7 @@ public class ARFFParser {
             String line = in.nextLine().replaceAll("\\s+", " ");
             String lineLowercase = line.toLowerCase();
 
-            if (lineLowercase.isEmpty() || lineLowercase.startsWith(COMMENT)) {
+            if (lineLowercase.isEmpty() || lineLowercase.startsWith(COMMENT) || lineLowercase.startsWith(RELATION)) {
                 continue;
             } else if (lineLowercase.startsWith(ATTRIBUTE)) {
                 getAttributes(matrix, line);
@@ -103,7 +104,7 @@ public class ARFFParser {
         List<Double> row = new ArrayList<Double>();
         for (int i = 0; i < cols.length; i++) {
             if (cols[i] == "?") {
-                row.add(Matrix.UNKNOWN_VALUE);
+                row.add(MatrixReloaded.UNKNOWN_VALUE);
             } else if (matrix.isContinuous(i)) {
                 row.add(Double.valueOf(cols[i]));
             } else {

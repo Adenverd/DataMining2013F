@@ -43,7 +43,7 @@ public class ColumnAttributes {
     }
 
     public String toString() {
-        return String.format("Name: %s, Type: %s, Values: %s", columnName, columnType, values);
+        return String.format("{ Name: %s, Type: %s, Values: %s }", columnName, columnType, values);
     }
 }
 

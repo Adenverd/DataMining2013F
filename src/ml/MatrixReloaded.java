@@ -1,85 +1,73 @@
 package ml;
 
-import java.io.File;
 import java.util.*;
 
 public class MatrixReloaded {
 
     public static final Double UNKNOWN_VALUE = Double.NEGATIVE_INFINITY;
 
-    //Data
+    // Data
     public List<List<Double>> data;
 
-    //Meta-data
-    private int numCols;
-    private Map<Integer, ColumnAttributes> columnAttributes; //maps column index to categorical attributes
+    // Meta-data
+    private List<ColumnAttributes> columnAttributes; // maps column index to categorical attributes
 
-    /**
-     * Returns the number of columns in the matrix
-     * @return
-     */
-    public int getNumCols(){
-        return numCols;
-    }
-
-    /**
-     * Returns the number of rows in the matrix
-     * @return
-     */
-    public int getNumRows(){
-        return data.size();
-    }
 
     /**
      * Creates an empty matrix
      */
-    public MatrixReloaded(){
-        numCols = 0;
-
+    public MatrixReloaded() {
         data = new ArrayList<List<Double>>();
-        columnAttributes = new HashMap<Integer, ColumnAttributes>();
+        columnAttributes = new ArrayList<ColumnAttributes>();
     }
 
     /**
-     * Appends a row to the end of the matrix
-     * @param row
+     * Returns the number of columns in the matrix
      */
-    public void addRow(List<Double> row){
-        /* Check to make sure that the number of columns in row matches the number of columns in the matrix */
-        if(row.size() != getNumCols()){
-            throw new MLException("Cannot add a row with mismatching number of columns to matrix");
-        }
+    public int getNumCols() {
+        return columnAttributes.size();
+    }
 
-        for (Double value : row){
-            if (value == null){
-                throw new MLException("Cannot add a row with a null Double value");
-            }
-        }
-
-        data.add(row);
+    /**
+     * Returns the number of rows in the matrix
+     */
+    public int getNumRows() {
+        return data.size();
     }
 
     /**
      * Appends an empty row to the end of the matrix
      */
-    public void addRow(){
+    public void addRow() {
         List<Double> newRow = new ArrayList<Double>();
         data.add(newRow);
+    }
+
+    /**
+     * Appends a row to the end of the matrix
+     */
+    public void addRow(List<Double> row) {
+        // Check to make sure that the number of columns in row matches the number of columns in the matrix
+        if (row.size() != getNumCols()) {
+            throw new MLException("Cannot add a row with mismatching number of columns to matrix");
+        }
+        for (Double value : row) {
+            if (value == null) {
+                throw new MLException("Cannot add a row with a null Double value");
+            }
+        }
+        data.add(row);
     }
 
     /**
      * Adds a new column to the matrix (throws if matrix is not empty)
      * @param attributes
      */
-    public void addColumn(ColumnAttributes attributes){
-        if (!data.isEmpty()){
+    public void addColumn(ColumnAttributes attributes) {
+        if (!data.isEmpty()) {
             throw new UnsupportedOperationException("Cannot add a column to a matrix that contains rows");
         }
-
-        columnAttributes.put(numCols, attributes);
-
-        //numCols needs to be incremented AFTER putting the column attributes
-        numCols++;
+        columnAttributes.add(attributes);
     }
 
     /**
@@ -87,66 +75,61 @@ public class MatrixReloaded {
      * @param row1
      * @param row2
      */
-    public void swapRows(int row1, int row2){
+    public void swapRows(int row1, int row2) {
         List<Double> tempRow = getRow(row1);
-
-        data.remove(row1);
-        data.add(row1, data.get(row2));
-
-        data.remove(row2);
-        data.add(row2, tempRow);
+        data.set(row1, data.get(row2));
+        data.set(row2, tempRow);
     }
 
     /**
      * Returns the row at index rowNum in the matrix
+     *
      * @param row
-     * @return
      */
-    public List<Double> getRow(int row){
+    public List<Double> getRow(int row) {
         return data.get(row);
     }
 
     /**
      * Returns the attributes of column col
+     *
      * @param col
-     * @return
      */
-    public ColumnAttributes getColumnAttributes(int col){
+    public ColumnAttributes getColumnAttributes(int col) {
         return columnAttributes.get(col);
     }
 
     /**
      * Returns the type of column col
+     *
      * @param col
-     * @return
      */
-    public ColumnType getColumnType(int col){
+    public ColumnType getColumnType(int col) {
         return columnAttributes.get(col).getColumnType();
     }
 
     /**
      * Returns true if column col is of type ColumnType.Categorical, false otherwise
+     *
      * @param col
-     * @return
      */
-    public boolean isCategorical(int col){
-        return columnAttributes.get(col).getColumnType()==ColumnType.Categorical;
+    public boolean isCategorical(int col) {
+        return getColumnType(col) == ColumnType.Categorical;
     }
 
     /**
      * Returns true if column col is of type ColumnType.Continuous, false otherwise
+     *
      * @param col
-     * @return
      */
-    public boolean isContinuous(int col){
-        return columnAttributes.get(col).getColumnType()==ColumnType.Continuous;
+    public boolean isContinuous(int col) {
+        return getColumnType(col) == ColumnType.Continuous;
     }
 
-    public Double columnMean(int col){
-        if(!isContinuous(col)){
+    public Double columnMean(int col) {
+        if (!isContinuous(col)) {
             throw new MLException("Cannot calculate the mean of a non-continuous column");
         }
-
         double sum = 0.0;
         int count = 0;
         for (List<Double> row : data) {
@@ -159,7 +142,7 @@ public class MatrixReloaded {
         return sum / count;
     }
 
-/**
+    /**
      * Returns the min elements in the specified column
      * (Elements with the value UNKNOWN_VALUE are ignored.)
      * If no elements in a column have a value, returns
@@ -168,7 +151,7 @@ public class MatrixReloaded {
      * @param col
      */
     public Double columnMin(int col) {
-        if (!isContinuous(col)){
+        if (!isContinuous(col)) {
             throw new MLException("Cannot calculate the min of a non-continuous column");
         }
         boolean allUnknownValues = true;
@@ -180,7 +163,7 @@ public class MatrixReloaded {
                 min = min < val ? min : val;
             }
         }
-        if(allUnknownValues){
+        if (allUnknownValues) {
             return UNKNOWN_VALUE;
         }
         return min;
@@ -195,49 +178,48 @@ public class MatrixReloaded {
      * @param col
      */
     public Double columnMax(int col) {
-        if(!isContinuous(col)){
+        if (!isContinuous(col)) {
             throw new MLException("Cannot calculate the max of a non-continuous column");
         }
         boolean allUnknownValues = true;
-        Double min = Double.MIN_VALUE;
+        Double max = Double.MIN_VALUE;
         for (List<Double> row : data) {
             double val = row.get(col);
             if (val != UNKNOWN_VALUE) {
                 allUnknownValues = false;
-                min = min > val ? min : val;
+                max = max > val ? max : val;
             }
         }
-        if(allUnknownValues){
+        if (allUnknownValues) {
             return UNKNOWN_VALUE;
         }
-        return min;
+        return max;
     }
 
     /**
      * Returns the most common value in the specified column.
      * (Elements with the value UNKNOWN_VALUE are ignored.)
      * If all elements are UNKNOWN_VALUE, returns UNKNOWN_VALUE.
+     *
      * @param col
-     * @return
      */
-    public Double mostCommonValue(int col){
+    public Double mostCommonValue(int col) {
         boolean allUnknownValues = true;
         Map<Double, Integer> frequencies = new HashMap<Double, Integer>();
         for (List<Double> row : data) {
             double val = row.get(col);
 
-            if(val!=UNKNOWN_VALUE){
+            if (val != UNKNOWN_VALUE) {
                 allUnknownValues = false;
-                if(frequencies.containsKey(val)){
-                    frequencies.put(val, frequencies.get(val)+1);
-                }
-                else{
+                if (frequencies.containsKey(val)) {
+                    frequencies.put(val, frequencies.get(val) + 1);
+                } else {
                     frequencies.put(val, 1);
                 }
             }
         }
 
-        if(allUnknownValues){
+        if (allUnknownValues) {
             return UNKNOWN_VALUE;
         }
 
@@ -247,25 +229,34 @@ public class MatrixReloaded {
 
         for (Double key : keySet) {
             int val = frequencies.get(key);
-            mostCommonValue = val > highestFrequency ? val : mostCommonValue;
+            if (val > highestFrequency) {
+                mostCommonValue = key;
+                highestFrequency = val;
+            }
         }
         return mostCommonValue;
     }
+
+    /**
+     * For debugging purposes
+     */
     public void printMatrix() {
 
-        // Stuffz
+        // Column attributes stuff
         System.out.println(columnAttributes);
+        System.out.println();
 
         // Column names
-        for (int i = 0; i < columnAttributes.size(); i++) {
-            System.out.print(columnAttributes.get(i).getName());
+        for (int i = 0; i < getNumCols(); i++) {
+            System.out.printf("%15s", columnAttributes.get(i).getName());
         }
         System.out.println();
 
+        // Data
         for (int i = 0; i < getNumRows(); i++) {
             List<Double> row = getRow(i);
             for (int j = 0; j < getNumCols(); j++) {
-                System.out.print(row.get(j) + ", ");
+                System.out.printf("%15s ", row.get(j));
             }
             System.out.println();
         }
