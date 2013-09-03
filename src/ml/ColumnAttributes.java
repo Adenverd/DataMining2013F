@@ -37,6 +37,14 @@ public class ColumnAttributes {
     public ColumnType getColumnType(){
         return columnType;
     }
+
+    public String getName() {
+        return columnName;
+    }
+
+    public String toString() {
+        return String.format("Name: %s, Type: %s, Values: %s", columnName, columnType, values);
+    }
 }
 
 

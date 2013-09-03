@@ -157,4 +157,25 @@ public class MatrixReloaded {
         return sum / count;
     }
 
+
+    public void printMatrix() {
+
+        // Stuffz
+        System.out.println(columnAttributes);
+
+        // Column names
+        for (int i = 0; i < columnAttributes.size(); i++) {
+            System.out.print(columnAttributes.get(i).getName());
+        }
+        System.out.println();
+
+        for (int i = 0; i < getNumRows(); i++) {
+            List<Double> row = getRow(i);
+            for (int j = 0; j < getNumCols(); j++) {
+                System.out.print(row.get(j));
+            }
+            System.out.println();
+        }
+    }
+
 }
