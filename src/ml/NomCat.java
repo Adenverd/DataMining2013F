@@ -3,6 +3,10 @@ package ml;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * @author Kanat Bekt
+ * @date 9/1/2013
+ */
 public class NomCat extends UnsupervisedLearner {
 
     private List<Integer> values = new Vector<Integer>();

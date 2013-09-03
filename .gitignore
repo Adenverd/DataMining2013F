@@ -6,3 +6,4 @@ bin/
 *.iws
 
 .DS_Store
+out/

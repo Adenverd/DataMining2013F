@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Vector;
 import static java.lang.Math.max;
 
+/**
+ * @author Kanat Bekt
+ * @date 9/1/2013
+ */
 public class Normalizer extends UnsupervisedLearner {
 
     private List<Double> inputMins = new Vector<Double>();

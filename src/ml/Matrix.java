@@ -31,7 +31,7 @@ public class Matrix {
      *
      * @param filename
      */
-    public void LoadARFF(String filename) {
+    public void loadARFF(String filename) {
         throw new UnsupportedOperationException("Not Implemented");
     }
 
@@ -41,6 +41,7 @@ public class Matrix {
      * @param filename
      */
     public void saveARFF(String filename) {
+        //FUCK THIS SHIT
         throw new UnsupportedOperationException("Not Implemented");
     }
 

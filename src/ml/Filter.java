@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Vector;
 
 /**
+ * @author Kanat Bekt
+ * @date 9/1/2013
  * Wraps another supervised learner. It applies some unsupervised operation
  * to the data before presenting it to the learner.
  */

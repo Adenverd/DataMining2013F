@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Vector;
 
 /**
+ * @author Kanat Bekt
+ * @date 9/1/2013
  * Replaces missing continuous values with the mean.
  * Replaces missing categorical values with the most-common value (or mode).
  */
