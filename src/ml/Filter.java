@@ -33,7 +33,7 @@ public class Filter extends SupervisedLearner {
      */
     @Override
     public void train(Matrix features, Matrix labels) {
-        if (features.getRows() != labels.getRows()) {
+        if (features.getNumRows() != labels.getNumRows()) {
             throw new MLException("Features and labels must have the same number of rows.");
         }
         if (filterInputs) {

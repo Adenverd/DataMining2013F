@@ -21,11 +21,10 @@ public class Normalizer extends UnsupervisedLearner {
     @Override
     public void train(Matrix data) {
         template.copyMetaData(data);
-        for (int i = 0; i < data.getCols(); i++) {
-            if (data.valueCount(i) == 0) {
+        for (int i = 0; i < data.getNumCols(); i++) {
+            if (data.isContinuous(i)) {
                 inputMins.add(data.columnMin(i));
-                inputMaxs.add(max(inputMins.get(i) + 1e-9,
-                                  data.columnMax(i)));
+                inputMaxs.add(max(inputMins.get(i), data.columnMax(i)));
             } else {
                 inputMins.add(Matrix.UNKNOWN_VALUE);
                 inputMaxs.add(Matrix.UNKNOWN_VALUE);

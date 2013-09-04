@@ -19,7 +19,7 @@ public class NomCat extends UnsupervisedLearner {
     @Override
     public void train(Matrix data) {
         int totalValues = 0;
-        for (int i = 0; i < data.getCols(); i++) {
+        for (int i = 0; i < data.getNumCols(); i++) {
             int n = data.valueCount(i);
             n = n == 0 ? 1 : n;
             values.add(n);
@@ -65,9 +65,9 @@ public class NomCat extends UnsupervisedLearner {
      */
     @Override
     public List<Double> untransform(List<Double> in) {
-        if (in.size() != template.getCols()) {
+        if (in.size() != template.getNumCols()) {
             throw new MLException(String.format(
-                    "Unexpected in-vector size. Expected %d, Got: %d", template.getCols(), in.size()));
+                    "Unexpected in-vector size. Expected %d, Got: %d", template.getNumCols(), in.size()));
         }
         List<Double> out = new ArrayList<Double>();
         int inStart = 0;
