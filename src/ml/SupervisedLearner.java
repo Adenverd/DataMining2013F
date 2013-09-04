@@ -11,4 +11,8 @@ public abstract class SupervisedLearner {
     public abstract void train(Matrix features, Matrix labels);
 
     public abstract List<Double> predict(List<Double> in);
+
+    public double getAccuracy() {
+        return Matrix.UNKNOWN_VALUE;
+    }
 }
