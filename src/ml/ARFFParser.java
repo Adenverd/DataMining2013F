@@ -11,7 +11,7 @@ import ml.ColumnAttributes.ColumnType;
 public class ARFFParser {
 
     public static void main(String[] args) throws Exception {
-        MatrixReloaded matrix = ARFFParser.loadARFF("/Users/dev/workspace/DataMining2013F/iris.arff");
+        Matrix matrix = ARFFParser.loadARFF("/Users/dev/workspace/DataMining2013F/iris.arff");
 
         matrix.printMatrix();
     }
@@ -31,11 +31,11 @@ public class ARFFParser {
      * @throws FileNotFoundException if file not found
      * @throws MLException with a detailed message if parsing fails
      */
-    public static MatrixReloaded loadARFF(String filepath)
+    public static Matrix loadARFF(String filepath)
             throws FileNotFoundException {
 
         Scanner in = new Scanner(new File(filepath));
-        MatrixReloaded matrix = new MatrixReloaded();
+        Matrix matrix = new Matrix();
         boolean isProcessingData = false;
 
         while (in.hasNext()) {
@@ -58,7 +58,7 @@ public class ARFFParser {
         return matrix;
     }
 
-    public static MatrixReloaded saveToARFF(MatrixReloaded matrix, String filepath)
+    public static Matrix saveToARFF(Matrix matrix, String filepath)
             throws Exception {
         throw new UnsupportedOperationException("Not Implemented");
     }
@@ -68,7 +68,7 @@ public class ARFFParser {
      *
      * @throws MLException if attribute type is not NUMERIC, REAL, or categorical
      */
-    private static void getAttributes(MatrixReloaded matrix, String line) {
+    private static void getAttributes(Matrix matrix, String line) {
         String[] sp = line.split(" ");
         String name = sp[1], type = sp[2];
 
@@ -95,7 +95,7 @@ public class ARFFParser {
      *                     or if the number of columns doesn't match the number
      *                     of columns in the matrix
      */
-    private static void getData(MatrixReloaded matrix, String line) {
+    private static void getData(Matrix matrix, String line) {
         String[] cols = line.split(",");
         if (matrix.getNumCols() != cols.length) {
             throw new MLException(String.format(
@@ -105,7 +105,7 @@ public class ARFFParser {
         List<Double> row = new ArrayList<Double>();
         for (int i = 0; i < cols.length; i++) {
             if (cols[i] == "?") {
-                row.add(MatrixReloaded.UNKNOWN_VALUE);
+                row.add(Matrix.UNKNOWN_VALUE);
             } else if (matrix.isContinuous(i)) {
                 row.add(Double.valueOf(cols[i]));
             } else {
