@@ -18,6 +18,9 @@ public class NomCat extends UnsupervisedLearner {
      */
     @Override
     public void train(Matrix data) {
+        throw new UnsupportedOperationException("NEED TO FIXZZZ");
+
+        /*
         int totalValues = 0;
         for (int i = 0; i < data.getNumCols(); i++) {
             int n = data.valueCount(i);
@@ -26,6 +29,7 @@ public class NomCat extends UnsupervisedLearner {
             totalValues += n;
         }
         template.setSize(0, totalValues);
+        */
     }
 
     /**

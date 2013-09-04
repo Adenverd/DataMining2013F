@@ -20,6 +20,9 @@ public class Normalizer extends UnsupervisedLearner {
      */
     @Override
     public void train(Matrix data) {
+        throw new UnsupportedOperationException("NEED TO FIXZZZ");
+
+        /*
         template.copyMetaData(data);
         for (int i = 0; i < data.getNumCols(); i++) {
             if (data.isContinuous(i)) {
@@ -30,6 +33,7 @@ public class Normalizer extends UnsupervisedLearner {
                 inputMaxs.add(Matrix.UNKNOWN_VALUE);
             }
         }
+        */
     }
 
     /**

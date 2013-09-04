@@ -21,11 +21,16 @@ public class Imputer extends UnsupervisedLearner {
      */
     @Override
     public void train(Matrix data) {
+
+        throw new UnsupportedOperationException("NEED TO FIXZZZ");
+
+        /*
         template.copyMetaData(data);
         for (int i = 0; i < data.getNumCols(); i++) {
             double value = data.isContinuous(i) ? data.columnMean(i) : data.mostCommonValue(i);
             centroid.add(value);
         }
+        */
     }
 
     /**
