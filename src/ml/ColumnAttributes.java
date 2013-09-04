@@ -29,6 +29,20 @@ public class ColumnAttributes {
         }
     }
 
+    /**
+     * Performs a deep-copy of other
+     * @param other
+     */
+    public ColumnAttributes(ColumnAttributes other){
+        this.columnName = other.columnName;
+        this.columnType = other.columnType;
+        this.values = new ArrayList<String>();
+
+        for(String val : other.getValues()){
+            this.values.add(new String(val));
+        }
+    }
+
     public void addValue(String value) {
         values.add(value);
     }
@@ -51,6 +65,10 @@ public class ColumnAttributes {
 
     public String toString() {
         return String.format("{ Name: %s, Type: %s, Values: %s }", columnName, columnType, values);
+    }
+
+    public List<String> getValues(){
+        return values;
     }
 }
 

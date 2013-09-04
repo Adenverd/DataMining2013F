@@ -23,6 +23,22 @@ public class Matrix {
     }
 
     /**
+     * Performs a deep-copy of the other Matrix
+     * @param other
+     */
+    public Matrix(Matrix other){
+        this.data = new ArrayList<List<Double>>();
+
+        for(ColumnAttributes attr : other.columnAttributes){
+            this.columnAttributes.add(new ColumnAttributes(attr));
+        }
+
+        for(List<Double> row : other.data){
+            this.data.add(new ArrayList<Double>(row));
+        }
+    }
+
+    /**
      * Returns the number of columns in the matrix
      */
     public int getNumCols() {
@@ -195,6 +211,48 @@ public class Matrix {
             return UNKNOWN_VALUE;
         }
         return max;
+    }
+
+    /**
+     * Removes a section of the matrix.
+     * @param startRow Start index of section to remove, inclusive.
+     * @param endRow End index of section to remove, exclusive.
+     */
+    public void removeSubMatrix(int startRow, int endRow){
+        for (int i = startRow; i < endRow; i++){
+            data.remove(i);
+        }
+    }
+
+    /**
+     * Removes a fold from the matrix, returning the sub-Matrix that was removed. Useful for n-fold
+     * cross-validation.
+     * @param startRow Start index of fold to remove, inclusive.
+     * @param endRow End index of fold to remove, exclusive.
+     * @return
+     */
+    public Matrix removeFold(int startRow, int endRow){
+        Matrix subMatrix = subMatrix(startRow, endRow);
+        this.removeSubMatrix(startRow, endRow);
+        return subMatrix;
+    }
+
+    /**
+     * Returns a section of the matrix as a new matrix, with the same column attributes.
+     * @param startRow Start index, inclusive.
+     * @param endRow End index, exclusive.
+     * @return
+     */
+    public Matrix subMatrix(int startRow, int endRow) {
+        Matrix subMatrix = new Matrix();
+        //Add column info
+        for (ColumnAttributes attr : this.columnAttributes){
+            subMatrix.addColumn(attr);
+        }
+        for (List<Double> row : data.subList(startRow, endRow)){
+            subMatrix.addRow(row);
+        }
+        return subMatrix;
     }
 
     /**
