@@ -1,5 +1,7 @@
 package ml;
 
+import helpers.MathUtility;
+
 import java.util.List;
 
 /**
@@ -32,7 +34,7 @@ public abstract class SupervisedLearner {
                 double predicted = result.get(j);
 
                 if (labels.isCategorical(j)) {
-                    magnitude += actual == predicted ? 1 : 0;
+                    magnitude += MathUtility.isEquals(actual, predicted) ? 1 : 0;
                 } else {
                     double res = actual - predicted;
                     magnitude += res * res;
