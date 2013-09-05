@@ -6,7 +6,7 @@ public class MathUtility {
     private static final double EPSILON = 0.001;
 
     public static boolean isEquals(double a, double b) {
-        return abs(a - b) < EPSILON;
+        return isEquals(a, b, EPSILON);
     }
 
     public static boolean isEquals(double a, double b, double epsilon) {

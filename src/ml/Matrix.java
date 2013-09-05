@@ -232,26 +232,8 @@ public class Matrix {
      * @return
      */
     public Matrix removeFold(int startRow, int endRow){
-        Matrix subMatrix = subMatrix(startRow, endRow);
+        Matrix subMatrix = subMatrixRows(startRow, endRow);
         this.removeSubMatrix(startRow, endRow);
-        return subMatrix;
-    }
-
-    /**
-     * Returns a section of the matrix as a new matrix, with the same column attributes.
-     * @param startRow Start index, inclusive.
-     * @param endRow End index, exclusive.
-     * @return
-     */
-    public Matrix subMatrix(int startRow, int endRow) {
-        Matrix subMatrix = new Matrix();
-        //Add column info
-        for (ColumnAttributes attr : this.columnAttributes){
-            subMatrix.addColumn(attr);
-        }
-        for (List<Double> row : data.subList(startRow, endRow)){
-            subMatrix.addRow(row);
-        }
         return subMatrix;
     }
 
@@ -294,6 +276,58 @@ public class Matrix {
             }
         }
         return mostCommonValue;
+    }
+
+    /**
+     * Returns a section of the matrix as a new matrix, with the same column attributes.
+     * Note: This operation does a deep-copy and is expensive.
+     *
+     * @param startRowIndex Start index row, inclusive.
+     * @param endRowIndex End index row, exclusive.
+     */
+    public Matrix subMatrixRows(int startRowIndex, int endRowIndex) {
+        return subMatrix(startRowIndex, endRowIndex, 0, getNumCols());
+    }
+
+    /**
+     * Returns a section of the matrix as a new matrix, with the row values.
+     * Note: This operation does a deep-copy and is expensive.
+     *
+     * @param startColIndex Start index column, inclusive.
+     * @param endColIndex End index column, exclusive.
+     */
+    public Matrix subMatrixCols(int startColIndex, int endColIndex) {
+        return subMatrix(0, getNumRows(), startColIndex, endColIndex);
+    }
+
+    /**
+     * Returns a section of the matrix as a new matrix
+     * Note: This operation does a deep-copy and is expensive.
+     *
+     * @param startRowIndex Start index row, inclusive.
+     * @param endRowIndex End index row, exclusive.
+     * @param startColIndex Start index, inclusive.
+     * @param endColIndex End index, exclusive.
+     */
+    public Matrix subMatrix(int startRowIndex, int endRowIndex, int startColIndex, int endColIndex) {
+
+        if (startRowIndex < 0 || endRowIndex > getNumRows()
+                || startColIndex < 0 || endColIndex > getNumCols()) {
+            throw new IndexOutOfBoundsException("Sub-matrix index out of range");
+        }
+
+        Matrix subMatrix = new Matrix();
+
+        for (int i = startColIndex; i < endColIndex; i++) {
+            ColumnAttributes columnAttributes = getColumnAttributes(i);
+            subMatrix.addColumn(new ColumnAttributes(columnAttributes));
+        }
+
+        for (int i = startRowIndex; i < endRowIndex; i++) {
+            List<Double> row = getRow(i);
+            subMatrix.addRow(new ArrayList<Double>(row));
+        }
+        return subMatrix;
     }
 
     /**

@@ -34,7 +34,7 @@ public abstract class SupervisedLearner {
                 double predicted = result.get(j);
 
                 if (labels.isCategorical(j)) {
-                    magnitude += MathUtility.isEquals(actual, predicted) ? 1 : 0;
+                    magnitude += MathUtility.isEquals(actual, predicted) ? 0 : 1;
                 } else {
                     double res = actual - predicted;
                     magnitude += res * res;

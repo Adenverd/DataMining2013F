@@ -36,11 +36,15 @@ public class ColumnAttributes {
     public ColumnAttributes(ColumnAttributes other){
         this.columnName = other.columnName;
         this.columnType = other.columnType;
-        this.values = new ArrayList<String>();
 
-        for(String val : other.getValues()){
-            this.values.add(new String(val));
+        if (other.columnType == ColumnType.CATEGORICAL) {
+            this.values = new ArrayList<String>();
+
+            for(String val : other.getValues()){
+                this.values.add(new String(val));
+            }
         }
+
     }
 
     public void addValue(String value) {
