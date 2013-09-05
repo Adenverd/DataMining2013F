@@ -336,6 +336,13 @@ public class Matrix {
     }
 
     /**
+     * Randomly shuffles the rows of the matrix
+     */
+    public void shuffle() {
+        Collections.shuffle(data);
+    }
+
+    /**
      * For debugging purposes
      */
     public void printMatrix() {
