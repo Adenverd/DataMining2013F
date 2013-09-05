@@ -66,7 +66,8 @@ public class Matrix {
     public void addRow(List<Double> row) {
         // Check to make sure that the number of columns in row matches the number of columns in the matrix
         if (row.size() != getNumCols()) {
-            throw new MLException("Cannot add a row with mismatching number of columns to matrix");
+            throw new MLException(String.format(
+                    "Cannot add a row with mismatching number of columns to matrix. Expected: %d, Got: %d", getNumCols(), row.size()));
         }
         for (Double value : row) {
             if (value == null) {
@@ -325,7 +326,11 @@ public class Matrix {
 
         for (int i = startRowIndex; i < endRowIndex; i++) {
             List<Double> row = getRow(i);
-            subMatrix.addRow(new ArrayList<Double>(row));
+            List<Double> newRow = new ArrayList<Double>();
+            for (int j = startColIndex; j < endColIndex; j++) {
+                newRow.add(row.get(j));
+            }
+            subMatrix.addRow(newRow);
         }
         return subMatrix;
     }
