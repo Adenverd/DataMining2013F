@@ -24,7 +24,9 @@ public abstract class SupervisedLearner {
             List<Double> result = predict(features.getRow(i));
 
             if (labels.getNumCols() != result.size()) {
-                throw new MLException("Returned result size is different than number of columns in labels!");
+                throw new MLException(String.format(
+                        "Returned result size [%d] is different than number of columns [%d] in labels!",
+                        result.size(), labels.getNumCols()));
             }
 
             double magnitude = 0;

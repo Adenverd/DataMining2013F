@@ -28,6 +28,7 @@ public class Matrix {
      */
     public Matrix(Matrix other){
         this.data = new ArrayList<List<Double>>();
+        columnAttributes = new ArrayList<ColumnAttributes>();
 
         for(ColumnAttributes attr : other.columnAttributes){
             this.columnAttributes.add(new ColumnAttributes(attr));
@@ -220,8 +221,8 @@ public class Matrix {
      * @param endRow End index of section to remove, exclusive.
      */
     public void removeSubMatrix(int startRow, int endRow){
-        for (int i = startRow; i < endRow; i++){
-            data.remove(i);
+        for (int i = 0; i < (endRow-startRow); i++){
+            data.remove(startRow);
         }
     }
 
@@ -340,6 +341,10 @@ public class Matrix {
      */
     public void shuffle() {
         Collections.shuffle(data);
+    }
+
+    public void shuffle(Random rand) {
+        Collections.shuffle(data, rand);
     }
 
     /**
