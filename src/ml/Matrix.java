@@ -10,8 +10,8 @@ public class Matrix {
     // Data
     public List<List<Double>> data;
 
-    // Meta-data
-    private List<ColumnAttributes> columnAttributes; // maps column index to categorical attributes
+    // Maps column index to categorical attributes
+    private List<ColumnAttributes> columnAttributes;
 
 
     /**
@@ -24,18 +24,19 @@ public class Matrix {
 
     /**
      * Performs a deep-copy of the other Matrix
-     * @param other
+     *
+     * @param other other Matrix
      */
-    public Matrix(Matrix other){
-        this.data = new ArrayList<List<Double>>();
+    public Matrix(Matrix other) {
+        data = new ArrayList<List<Double>>();
         columnAttributes = new ArrayList<ColumnAttributes>();
 
-        for(ColumnAttributes attr : other.columnAttributes){
-            this.columnAttributes.add(new ColumnAttributes(attr));
+        for (ColumnAttributes attr : other.columnAttributes) {
+            columnAttributes.add(new ColumnAttributes(attr));
         }
 
-        for(List<Double> row : other.data){
-            this.data.add(new ArrayList<Double>(row));
+        for (List<Double> row : other.data) {
+            data.add(new ArrayList<Double>(row));
         }
     }
 
@@ -54,21 +55,13 @@ public class Matrix {
     }
 
     /**
-     * Appends an empty row to the end of the matrix
-     */
-    public void addRow() {
-        List<Double> newRow = new ArrayList<Double>();
-        data.add(newRow);
-    }
-
-    /**
      * Appends a row to the end of the matrix
      */
     public void addRow(List<Double> row) {
-        // Check to make sure that the number of columns in row matches the number of columns in the matrix
         if (row.size() != getNumCols()) {
             throw new MLException(String.format(
-                    "Cannot add a row with mismatching number of columns to matrix. Expected: %d, Got: %d", getNumCols(), row.size()));
+                    "Cannot add a row with mismatching number of columns to matrix. Expected: %d, Got: %d",
+                    getNumCols(), row.size()));
         }
         for (Double value : row) {
             if (value == null) {
@@ -80,19 +73,16 @@ public class Matrix {
 
     /**
      * Adds a new column to the matrix (throws if matrix is not empty)
-     * @param attributes
      */
     public void addColumn(ColumnAttributes attributes) {
         if (!data.isEmpty()) {
-            throw new UnsupportedOperationException("Cannot add a column to a matrix that contains rows");
+            throw new MLException("Cannot add a column to a matrix that contains rows");
         }
         columnAttributes.add(attributes);
     }
 
     /**
      * Swaps the locations of two rows in the matrix
-     * @param row1
-     * @param row2
      */
     public void swapRows(int row1, int row2) {
         List<Double> tempRow = getRow(row1);
@@ -102,8 +92,6 @@ public class Matrix {
 
     /**
      * Returns the row at index rowNum in the matrix
-     *
-     * @param row
      */
     public List<Double> getRow(int row) {
         return data.get(row);
@@ -111,8 +99,6 @@ public class Matrix {
 
     /**
      * Returns the attributes of column col
-     *
-     * @param col
      */
     public ColumnAttributes getColumnAttributes(int col) {
         return columnAttributes.get(col);
@@ -128,18 +114,14 @@ public class Matrix {
     }
 
     /**
-     * Returns true if column col is of type ColumnType.Categorical, false otherwise
-     *
-     * @param col
+     * Returns true if column col is of type ColumnType.CATEGORICAL, false otherwise
      */
     public boolean isCategorical(int col) {
         return getColumnType(col) == ColumnType.CATEGORICAL;
     }
 
     /**
-     * Returns true if column col is of type ColumnType.Continuous, false otherwise
-     *
-     * @param col
+     * Returns true if column col is of type ColumnType.CONTINUOUS, false otherwise
      */
     public boolean isContinuous(int col) {
         return getColumnType(col) == ColumnType.CONTINUOUS;
@@ -166,8 +148,6 @@ public class Matrix {
      * (Elements with the value UNKNOWN_VALUE are ignored.)
      * If no elements in a column have a value, returns
      * UNKNOWN_VALUE
-     *
-     * @param col
      */
     public Double columnMin(int col) {
         if (!isContinuous(col)) {
@@ -217,11 +197,12 @@ public class Matrix {
 
     /**
      * Removes a section of the matrix.
+     *
      * @param startRow Start index of section to remove, inclusive.
-     * @param endRow End index of section to remove, exclusive.
+     * @param endRow   End index of section to remove, exclusive.
      */
-    public void removeSubMatrix(int startRow, int endRow){
-        for (int i = 0; i < (endRow-startRow); i++){
+    public void removeSubMatrix(int startRow, int endRow) {
+        for (int i = 0; i < (endRow - startRow); i++) {
             data.remove(startRow);
         }
     }
@@ -229,11 +210,11 @@ public class Matrix {
     /**
      * Removes a fold from the matrix, returning the sub-Matrix that was removed. Useful for n-fold
      * cross-validation.
+     *
      * @param startRow Start index of fold to remove, inclusive.
-     * @param endRow End index of fold to remove, exclusive.
-     * @return
+     * @param endRow   End index of fold to remove, exclusive.
      */
-    public Matrix removeFold(int startRow, int endRow){
+    public Matrix removeFold(int startRow, int endRow) {
         Matrix subMatrix = subMatrixRows(startRow, endRow);
         this.removeSubMatrix(startRow, endRow);
         return subMatrix;
@@ -243,8 +224,6 @@ public class Matrix {
      * Returns the most common value in the specified column.
      * (Elements with the value UNKNOWN_VALUE are ignored.)
      * If all elements are UNKNOWN_VALUE, returns UNKNOWN_VALUE.
-     *
-     * @param col
      */
     public Double mostCommonValue(int col) {
         boolean allUnknownValues = true;
@@ -285,7 +264,7 @@ public class Matrix {
      * Note: This operation does a deep-copy and is expensive.
      *
      * @param startRowIndex Start index row, inclusive.
-     * @param endRowIndex End index row, exclusive.
+     * @param endRowIndex   End index row, exclusive.
      */
     public Matrix subMatrixRows(int startRowIndex, int endRowIndex) {
         return subMatrix(startRowIndex, endRowIndex, 0, getNumCols());
@@ -296,7 +275,7 @@ public class Matrix {
      * Note: This operation does a deep-copy and is expensive.
      *
      * @param startColIndex Start index column, inclusive.
-     * @param endColIndex End index column, exclusive.
+     * @param endColIndex   End index column, exclusive.
      */
     public Matrix subMatrixCols(int startColIndex, int endColIndex) {
         return subMatrix(0, getNumRows(), startColIndex, endColIndex);
@@ -307,9 +286,9 @@ public class Matrix {
      * Note: This operation does a deep-copy and is expensive.
      *
      * @param startRowIndex Start index row, inclusive.
-     * @param endRowIndex End index row, exclusive.
+     * @param endRowIndex   End index row, exclusive.
      * @param startColIndex Start index, inclusive.
-     * @param endColIndex End index, exclusive.
+     * @param endColIndex   End index, exclusive.
      */
     public Matrix subMatrix(int startRowIndex, int endRowIndex, int startColIndex, int endColIndex) {
 
@@ -343,6 +322,9 @@ public class Matrix {
         Collections.shuffle(data);
     }
 
+    /**
+     * Shuffles the rows with the given random seed
+     */
     public void shuffle(Random rand) {
         Collections.shuffle(data, rand);
     }

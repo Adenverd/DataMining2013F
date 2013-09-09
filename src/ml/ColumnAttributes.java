@@ -67,13 +67,14 @@ public class ColumnAttributes {
         return columnName;
     }
 
+    public List<String> getValues(){
+        return values;
+    }
+
     public String toString() {
         return String.format("{ Name: %s, Type: %s, Values: %s }", columnName, columnType, values);
     }
 
-    public List<String> getValues(){
-        return values;
-    }
 }
 
 

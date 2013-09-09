@@ -10,12 +10,6 @@ import ml.ColumnAttributes.ColumnType;
 // TODO: Redo this class without Scanner
 public class ARFFParser {
 
-    public static void main(String[] args) throws Exception {
-        Matrix matrix = ARFFParser.loadARFF("/Users/dev/workspace/DataMining2013F/iris.arff");
-
-        matrix.printMatrix();
-    }
-
     private static final String ATTRIBUTE = "@attribute";
     private static final String DATA = "@data";
     private static final String RELATION = "@relation";
@@ -77,8 +71,7 @@ public class ARFFParser {
             matrix.addColumn(column);
         } else if (type.startsWith("{") && type.endsWith("}")) {
             ColumnAttributes column = new ColumnAttributes(name, ColumnType.CATEGORICAL);
-            type = type.substring(1, type.length() - 1);
-            String[] values = type.split(",");
+            String[] values = type.substring(1, type.length() - 1).split(",");
             for (int i = 0; i < values.length; i++) {
                 column.addValue(values[i]);
             }
