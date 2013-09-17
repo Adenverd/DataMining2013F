@@ -19,13 +19,13 @@ public class ARFFParser {
      * Only Numeric (Real) and categorical attributes are allowed.
      *
      * @param filepath
-     * @throws FileNotFoundException if file not found
+     * @throws IOException
      * @throws MLException with a detailed message if parsing fails
      */
     public static Matrix loadARFF(String filepath)
-            throws FileNotFoundException, IOException {
+            throws IOException {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(new FileReader(filepath));
         Matrix matrix = new Matrix();
         boolean isProcessingData = false;
         String line;
