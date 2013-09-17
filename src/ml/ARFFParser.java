@@ -1,13 +1,10 @@
 package ml;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import ml.ColumnAttributes.ColumnType;
 
-// TODO: Redo this class without Scanner
 public class ARFFParser {
 
     private static final String ATTRIBUTE = "@attribute";
@@ -26,14 +23,15 @@ public class ARFFParser {
      * @throws MLException with a detailed message if parsing fails
      */
     public static Matrix loadARFF(String filepath)
-            throws FileNotFoundException {
+            throws FileNotFoundException, IOException {
 
-        Scanner in = new Scanner(new File(filepath));
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         Matrix matrix = new Matrix();
         boolean isProcessingData = false;
+        String line;
 
-        while (in.hasNext()) {
-            String line = in.nextLine().replaceAll("\\s+", " ");
+        while ((line = in.readLine()) != null) {
+            line = line.replaceAll("\\s+", " ");
             String lineLowercase = line.toLowerCase();
 
             if (lineLowercase.isEmpty() || lineLowercase.startsWith(COMMENT) || lineLowercase.startsWith(RELATION)) {
