@@ -28,6 +28,16 @@ public class Matrix {
      * @param other other Matrix
      */
     public Matrix(Matrix other) {
+        this(other, false);
+    }
+
+    /**
+     * Creates a new Matrix with the other Matrix column attributes only
+     *
+     * @param other
+     * @param isAttributesOnly
+     */
+    public Matrix(Matrix other, boolean isAttributesOnly) {
         data = new ArrayList<List<Double>>();
         columnAttributes = new ArrayList<ColumnAttributes>();
 
@@ -35,8 +45,10 @@ public class Matrix {
             columnAttributes.add(new ColumnAttributes(attr));
         }
 
-        for (List<Double> row : other.data) {
-            data.add(new ArrayList<Double>(row));
+        if (!isAttributesOnly) {
+            for (List<Double> row : other.data) {
+                data.add(new ArrayList<Double>(row));
+            }
         }
     }
 

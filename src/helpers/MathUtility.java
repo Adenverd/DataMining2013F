@@ -13,4 +13,11 @@ public class MathUtility {
         return abs(a - b) < epsilon;
     }
 
+    public static boolean isGreaterThan(double a, double b) {
+        return isGreaterThan(a, b, EPSILON);
+    }
+
+    public static boolean isGreaterThan(double a, double b, double epsilon) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 }
