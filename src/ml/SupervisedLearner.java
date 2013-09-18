@@ -10,6 +10,8 @@ import java.util.List;
  */
 public abstract class SupervisedLearner {
 
+    public static int predictCounter = 0;
+
     public abstract void train(Matrix features, Matrix labels);
 
     public abstract List<Double> predict(List<Double> in);
@@ -21,7 +23,11 @@ public abstract class SupervisedLearner {
     public double getAccuracy(Matrix features, Matrix labels) {
         double sum = 0;
         for (int i = 0; i < labels.getNumRows(); i++) {
+
             List<Double> result = predict(features.getRow(i));
+
+            System.out.println(predictCounter);
+            predictCounter++;
 
             if (labels.getNumCols() != result.size()) {
                 throw new MLException(String.format(
@@ -45,5 +51,39 @@ public abstract class SupervisedLearner {
             sum += magnitude;
         }
         return sum;
+    }
+
+    public double nFoldCrossValidation(Matrix features, Matrix labels, int n) {
+
+        int rows = features.getNumRows();
+
+        if (n > rows) {
+            throw new MLException(String.format(
+                    "n [%d] must be <= row size [%d]", n, features.getNumRows()));
+        }
+
+        if (rows != labels.getNumRows()) {
+            throw new MLException("Features and labels rows mismatch");
+        }
+
+        int foldSize = rows % n == 0 ? rows / n : rows / n + 1;
+        double sum = 0;
+        for (int i = 0; i < n; i++) {
+            int foldStart = i * foldSize;
+            int foldEnd = (i + 1) * foldSize;
+            if (foldEnd > rows) {
+                foldEnd = rows;
+            }
+
+            Matrix toTrainFeatures = new Matrix(features);
+            Matrix toTrainLabels = new Matrix(labels);
+
+            Matrix toPredictFeatures = toTrainFeatures.removeFold(foldStart, foldEnd);
+            Matrix toPredictLabels = toTrainLabels.removeFold(foldStart, foldEnd);
+
+            train(toTrainFeatures, toTrainLabels);
+            sum += this.getAccuracy(toPredictFeatures, toPredictLabels);
+        }
+        return sum / rows;
     }
 }
