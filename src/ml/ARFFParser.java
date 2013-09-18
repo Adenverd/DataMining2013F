@@ -11,8 +11,8 @@ public class ARFFParser {
     private static final String DATA = "@data";
     private static final String RELATION = "@relation";
     private static final String COMMENT = "%";
-    private static final String NUMERIC = "NUMERIC";
-    private static final String REAL = "REAL";
+    private static final String NUMERIC = "numeric";
+    private static final String REAL = "real";
 
     /**
      * Parses a ARFF file into a Matrix.
@@ -62,7 +62,7 @@ public class ARFFParser {
      */
     private static void getAttributes(Matrix matrix, String line) {
         String[] sp = line.split(" ");
-        String name = sp[1], type = sp[2];
+        String name = sp[1], type = sp[2].toLowerCase();
 
         if (type.equals(NUMERIC) || type.equals(REAL)) {
             ColumnAttributes column = new ColumnAttributes(name, ColumnType.CONTINUOUS);
