@@ -3,6 +3,7 @@ package ml;
 import helpers.MathUtility;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Sawyer Anderson
@@ -10,8 +11,8 @@ import java.util.List;
  */
 public abstract class SupervisedLearner {
 
-    public static int predictCounter = 0;
 
+    public static int counter = 0;
     public abstract void train(Matrix features, Matrix labels);
 
     public abstract List<Double> predict(List<Double> in);
@@ -26,9 +27,6 @@ public abstract class SupervisedLearner {
 
             List<Double> result = predict(features.getRow(i));
 
-            System.out.println(predictCounter);
-            predictCounter++;
-
             if (labels.getNumCols() != result.size()) {
                 throw new MLException(String.format(
                         "Returned result size [%d] is different than number of columns [%d] in labels!",
@@ -40,6 +38,10 @@ public abstract class SupervisedLearner {
 
                 double actual = labels.getRow(i).get(j);
                 double predicted = result.get(j);
+
+                if (counter++ % 20 == 0) {
+                    System.out.println(counter);
+                }
 
                 if (labels.isCategorical(j)) {
                     magnitude += MathUtility.isEquals(actual, predicted) ? 0 : 1;
