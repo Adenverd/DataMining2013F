@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public abstract class SupervisedLearner {
 
-
     public static int counter = 0;
+
     public abstract void train(Matrix features, Matrix labels);
 
     public abstract List<Double> predict(List<Double> in);
@@ -39,7 +39,7 @@ public abstract class SupervisedLearner {
                 double actual = labels.getRow(i).get(j);
                 double predicted = result.get(j);
 
-                if (counter++ % 20 == 0) {
+                if (++counter % 20 == 0) {
                     System.out.println(counter);
                 }
 
