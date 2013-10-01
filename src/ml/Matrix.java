@@ -2,6 +2,7 @@ package ml;
 
 import java.util.*;
 import ml.ColumnAttributes.ColumnType;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Matrix {
 
@@ -9,6 +10,7 @@ public class Matrix {
 
     // Data
     public List<List<Double>> data;
+
 
     // Maps column index to categorical attributes
     private List<ColumnAttributes> columnAttributes;
@@ -327,6 +329,20 @@ public class Matrix {
         return subMatrix;
     }
 
+    public Matrix shallowSubMatrixRows(int startRowIndex, int endRowIndex){
+//        if (startRowIndex < 0 || endRowIndex > getNumRows()) {
+//            throw new IndexOutOfBoundsException("Sub-matrix index out of range");
+//        }
+//
+//        Matrix subMatrix = new Matrix();
+//        subMatrix.setColumnAttributes(this.getColumnAttributes());
+//
+//        for(int i = startRowIndex; i < endRowIndex; i++){
+//
+//        }
+        throw new NotImplementedException();
+    }
+
     /**
      * Randomly shuffles the rows of the matrix
      */
@@ -364,5 +380,19 @@ public class Matrix {
             }
             System.out.println();
         }
+    }
+
+    //GETTERS AND SETTERS
+
+    /**
+     * Gets the list of this Matrix's column attributes.
+     * @return
+     */
+    public List<ColumnAttributes> getColumnAttributes() {
+        return columnAttributes;
+    }
+
+    public void setColumnAttributes(List<ColumnAttributes> columnAttributes) {
+        this.columnAttributes = columnAttributes;
     }
 }

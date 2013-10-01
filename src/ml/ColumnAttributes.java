@@ -59,6 +59,10 @@ public class ColumnAttributes {
         return values.indexOf(value);
     }
 
+    public int size(){
+        return values.size();
+    }
+
     public ColumnType getColumnType() {
         return columnType;
     }
