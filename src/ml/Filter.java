@@ -58,16 +58,16 @@ public class Filter extends SupervisedLearner {
         }
     }
 
-    private Matrix trainAndTransform(Matrix data) {
-        /*pTransform.train(data);
-        Matrix matrix = new Matrix();
-        matrix.copyMetaData(pTransform.outputTemplate());
-        matrix.newRows(data.getRows());
+    private Matrix trainAndTransform(Matrix matrix) {
+        pTransform.train(matrix);
 
-        for (int i = 0; i < data.getRows(); i++) {
-            pTransform.transform(data.getRow(i), matrix.getRow(i));
+        Matrix nMatrix = new Matrix();
+        nMatrix.setColumnAttributes(matrix.getColumnAttributes());
+
+        for (List<Double> row : matrix.getData()){
+            nMatrix.addRow(pTransform.transform(row));
         }
-        return matrix;*/
-        return null;
+
+        return nMatrix;
     }
 }

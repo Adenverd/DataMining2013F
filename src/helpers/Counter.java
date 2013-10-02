@@ -39,6 +39,30 @@ public class Counter<K> {
         return map.get(key);
     }
 
+    public K getMax(){
+        K maxKey = null;
+        Integer maxValue = Integer.MIN_VALUE;
+        for (Map.Entry<K, Integer> entry : map.entrySet()){
+            if (entry.getValue() > maxValue){
+                maxKey = entry.getKey();
+                maxValue = entry.getValue();
+            }
+        }
+        return maxKey;
+    }
+
+    public K getMin(){
+        K minKey = null;
+        Integer minValue = Integer.MAX_VALUE;
+        for (Map.Entry<K, Integer> entry : map.entrySet()){
+            if (entry.getValue() < minValue){
+                minKey = entry.getKey();
+                minValue = entry.getValue();
+            }
+        }
+        return minKey;
+    }
+
     public void remove (K key){
         map.remove(key);
     }

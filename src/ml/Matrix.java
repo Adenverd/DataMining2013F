@@ -9,7 +9,7 @@ public class Matrix {
     public static final Double UNKNOWN_VALUE = Double.NEGATIVE_INFINITY;
 
     // Data
-    public List<List<Double>> data;
+    private List<List<Double>> data;
 
 
     // Maps column index to categorical attributes
@@ -382,6 +382,10 @@ public class Matrix {
         }
     }
 
+    public void clearData(){
+        this.data = new ArrayList<List<Double>>();
+    }
+
     //GETTERS AND SETTERS
 
     /**
@@ -394,5 +398,13 @@ public class Matrix {
 
     public void setColumnAttributes(List<ColumnAttributes> columnAttributes) {
         this.columnAttributes = columnAttributes;
+    }
+
+    public List<List<Double>> getData() {
+        return data;
+    }
+
+    public void setData(List<List<Double>> data) {
+        this.data = data;
     }
 }

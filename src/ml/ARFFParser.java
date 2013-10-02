@@ -95,7 +95,7 @@ public class ARFFParser {
 
         List<Double> row = new ArrayList<Double>();
         for (int i = 0; i < cols.length; i++) {
-            if (cols[i] == "?") {
+            if (cols[i].equals("?")) {
                 row.add(Matrix.UNKNOWN_VALUE);
             } else if (matrix.isContinuous(i)) {
                 row.add(Double.valueOf(cols[i]));

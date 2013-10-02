@@ -1,5 +1,9 @@
 package ml;
 
+import helpers.Counter;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -12,41 +16,52 @@ import java.util.Vector;
  */
 public class Imputer extends UnsupervisedLearner {
 
-    private List<Double> centroid = new Vector<Double>();
-    private Matrix template = new Matrix();
+    private List<Double> columnCentroids = new ArrayList<Double>();
+    private Matrix template;
 
     /**
      * Computes the column means of continuous attributes, and
      * mode of of nominal attributes.
      */
     @Override
-    public void train(Matrix data) {
-
-        throw new UnsupportedOperationException("NEED TO FIXZZZ");
-
-        /*
-        template.copyMetaData(data);
-        for (int i = 0; i < data.getNumCols(); i++) {
-            double value = data.isContinuous(i) ? data.columnMean(i) : data.mostCommonValue(i);
-            centroid.add(value);
+    public void train(final Matrix matrix) {
+        List<List<Double>> data = matrix.getData();
+        for (int colIndex = 0; colIndex < data.get(0).size(); colIndex++){
+            if (matrix.getColumnAttributes(colIndex).getColumnType()== ColumnAttributes.ColumnType.CATEGORICAL){
+                Counter<Double> counter = new Counter<Double>();
+                for (int rowIndex = 0; rowIndex < data.size(); rowIndex++){
+                    Double value = data.get(rowIndex).get(colIndex);
+                    if(!value.equals(Matrix.UNKNOWN_VALUE)){
+                        counter.increment(data.get(rowIndex).get(colIndex));
+                    }
+                }
+                columnCentroids.add(colIndex, counter.getMax());
+            }
+            else if (matrix.getColumnAttributes(colIndex).getColumnType()== ColumnAttributes.ColumnType.CONTINUOUS){
+                Double total = 0.0;
+                for (int rowIndex = 0; rowIndex < data.size(); rowIndex++){
+                    Double value = data.get(rowIndex).get(colIndex);
+                    if(!value.equals(Matrix.UNKNOWN_VALUE)){
+                        total+=data.get(rowIndex).get(colIndex);
+                    }
+                }
+                Double average = total/data.size();
+                columnCentroids.add(colIndex, average);
+            }
         }
-        */
+
     }
 
     /**
      * Replaces missing values with the centroid value.
-     * @param in Features
      */
     @Override
     public List<Double> transform(List<Double> in) {
-        if (in.size() != centroid.size()) {
-            throw new MLException(String.format(
-                    "Unexpected in-vector size. Expected: %d, Got: %d", centroid.size(), in.size()));
-        }
-        List<Double> out = new ArrayList<Double>();
-        for (int i = 0; i < centroid.size(); i++) {
-            double value = in.get(i) == Matrix.UNKNOWN_VALUE ? centroid.get(i) : in.get(i);
-            out.add(value);
+        List<Double> out = new ArrayList<Double>(in); //deep copy in
+        for (int i = 0; i < out.size(); i++){
+            if(out.get(i).equals(Matrix.UNKNOWN_VALUE)){
+                out.set(i, columnCentroids.get(i));
+            }
         }
         return out;
     }
@@ -56,15 +71,7 @@ public class Imputer extends UnsupervisedLearner {
      */
     @Override
     public List<Double> untransform(List<Double> in) {
-        if (in.size() != centroid.size()) {
-            throw new MLException(String.format(
-                    "Unexpected in-vector size. Expected: %d, Got: %d", centroid.size(), in.size()));
-        }
-        List<Double> out = new ArrayList<Double>();
-        for (int i = 0; i < centroid.size(); i++) {
-            out.add(in.get(i));
-        }
-        return out;
+        return null;
     }
 
     /**
