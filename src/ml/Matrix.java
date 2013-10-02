@@ -2,7 +2,6 @@ package ml;
 
 import java.util.*;
 import ml.ColumnAttributes.ColumnType;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Matrix {
 
@@ -340,7 +339,7 @@ public class Matrix {
 //        for(int i = startRowIndex; i < endRowIndex; i++){
 //
 //        }
-        throw new NotImplementedException();
+        throw new MLException("Not Implemented");
     }
 
     /**
