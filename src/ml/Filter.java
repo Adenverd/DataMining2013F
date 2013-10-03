@@ -61,9 +61,7 @@ public class Filter extends SupervisedLearner {
     private Matrix trainAndTransform(Matrix matrix) {
         pTransform.train(matrix);
 
-        Matrix nMatrix = new Matrix();
-        nMatrix.setColumnAttributes(matrix.getColumnAttributes());
-
+        Matrix nMatrix = new Matrix(matrix, true);
         for (List<Double> row : matrix.getData()){
             nMatrix.addRow(pTransform.transform(row));
         }

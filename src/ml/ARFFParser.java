@@ -71,7 +71,7 @@ public class ARFFParser {
             ColumnAttributes column = new ColumnAttributes(name, ColumnType.CATEGORICAL);
             String[] values = type.substring(1, type.length() - 1).split(",");
             for (int i = 0; i < values.length; i++) {
-                column.addValue(values[i]);
+                column.addValue(values[i].trim());
             }
             matrix.addColumn(column);
         } else {
@@ -95,13 +95,14 @@ public class ARFFParser {
 
         List<Double> row = new ArrayList<Double>();
         for (int i = 0; i < cols.length; i++) {
-            if (cols[i].equals("?")) {
+            String val = cols[i].trim();
+            if (val.equals("?")) {
                 row.add(Matrix.UNKNOWN_VALUE);
             } else if (matrix.isContinuous(i)) {
-                row.add(Double.valueOf(cols[i]));
+                row.add(Double.valueOf(val));
             } else {
                 ColumnAttributes column = matrix.getColumnAttributes(i);
-                int valueIndex = column.getIndex(cols[i]);
+                int valueIndex = column.getIndex(val);
 
                 if (valueIndex < 0) {
                     throw new MLException("Value index not found: " + cols[i]);

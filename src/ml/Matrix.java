@@ -2,7 +2,6 @@ package ml;
 
 import java.util.*;
 import ml.ColumnAttributes.ColumnType;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Matrix {
 
@@ -340,7 +339,7 @@ public class Matrix {
 //        for(int i = startRowIndex; i < endRowIndex; i++){
 //
 //        }
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -355,6 +354,20 @@ public class Matrix {
      */
     public void shuffle(Random rand) {
         Collections.shuffle(data, rand);
+    }
+
+    /**
+     * Checks if a column is homogeneous
+     * @return true if all values in the given column are the same
+     */
+    public boolean isHomogeneous(int col) {
+        double val = getRow(0).get(col);
+        for (int i = 1; i < getNumRows(); i++) {
+            if (val != getRow(i).get(col)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
