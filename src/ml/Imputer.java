@@ -54,10 +54,13 @@ public class Imputer extends UnsupervisedLearner {
      */
     @Override
     public List<Double> transform(List<Double> in) {
-        List<Double> out = new ArrayList<Double>(in); //deep copy in
-        for (int i = 0; i < out.size(); i++){
-            if(out.get(i).equals(Matrix.UNKNOWN_VALUE)){
-                out.set(i, columnCentroids.get(i));
+        List<Double> out = new ArrayList<Double>();
+        for (int i = 0; i < in.size(); i++){
+            if(in.get(i).equals(Matrix.UNKNOWN_VALUE)){
+                out.add(columnCentroids.get(i));
+            }
+            else{
+                out.add(new Double(in.get(i).doubleValue()));
             }
         }
         return out;
