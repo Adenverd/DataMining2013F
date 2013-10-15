@@ -1,6 +1,7 @@
 package helpers;
 
 import java.util.Random;
+import static java.lang.Math.*;
 
 /**
  * Static wrapper for of java.util.Random
@@ -31,6 +32,10 @@ public class Rand {
 
     public static double nextGaussian() {
         return getInstance().nextGaussian();
+    }
+
+    public static double drawFromStandardExp() {
+        return -log(nextDouble());
     }
 
     private static Random getInstance() {
