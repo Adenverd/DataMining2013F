@@ -4,7 +4,7 @@ import java.util.Random;
 import static java.lang.Math.*;
 
 /**
- * Static wrapper for of java.util.Random
+ * Static random generators
  */
 public class Rand {
 
