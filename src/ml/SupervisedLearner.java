@@ -39,10 +39,6 @@ public abstract class SupervisedLearner {
                 double actual = labels.getRow(i).get(j);
                 double predicted = result.get(j);
 
-                if (++counter % 20 == 0) {
-                    System.out.println(counter);
-                }
-
                 if (labels.isCategorical(j)) {
                     magnitude += MathUtility.isEquals(actual, predicted) ? 0 : 1;
                 } else {
