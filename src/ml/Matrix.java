@@ -2,6 +2,7 @@ package ml;
 
 import java.util.*;
 import ml.ColumnAttributes.ColumnType;
+import static java.lang.Math.sqrt;
 
 public class Matrix {
 
@@ -10,10 +11,8 @@ public class Matrix {
     // Data
     private List<List<Double>> data;
 
-
     // Maps column index to categorical attributes
     private List<ColumnAttributes> columnAttributes;
-
 
     /**
      * Creates an empty matrix
@@ -328,20 +327,6 @@ public class Matrix {
         return subMatrix;
     }
 
-    public Matrix shallowSubMatrixRows(int startRowIndex, int endRowIndex){
-//        if (startRowIndex < 0 || endRowIndex > getNumRows()) {
-//            throw new IndexOutOfBoundsException("Sub-matrix index out of range");
-//        }
-//
-//        Matrix subMatrix = new Matrix();
-//        subMatrix.setColumnAttributes(this.getColumnAttributes());
-//
-//        for(int i = startRowIndex; i < endRowIndex; i++){
-//
-//        }
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
     /**
      * Randomly shuffles the rows of the matrix
      */
@@ -368,6 +353,32 @@ public class Matrix {
             }
         }
         return true;
+    }
+
+    /**
+     * Calculates the deviation for the given column
+     * dev = sqrt(variance)
+     */
+    public double deviation(int col) {
+        return sqrt(variance(col));
+    }
+
+    /**
+     * Calculates the variance for of the given column
+     * var = sum[(vali - mean)^2]  / (n-1)
+     */
+    public double variance(int col) {
+        int n = 0;
+        double mean = columnMean(col);
+        double sum = 0;
+        for (List<Double> row : data) {
+            double val = row.get(col) - mean;
+            if (val != UNKNOWN_VALUE) {
+                sum += (val * val);
+                n++;
+            }
+        }
+        return sum / (n - 1);
     }
 
     /**
