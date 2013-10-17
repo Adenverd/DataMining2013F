@@ -11,8 +11,6 @@ public class ARFFParser {
     private static final String DATA = "@data";
     private static final String RELATION = "@relation";
     private static final String COMMENT = "%";
-    private static final String NUMERIC = "numeric";
-    private static final String REAL = "real";
 
     /**
      * Parses a ARFF file into a Matrix.
@@ -64,7 +62,7 @@ public class ARFFParser {
         String[] sp = line.split(" ");
         String name = sp[1], type = sp[2].toLowerCase();
 
-        if (type.equals(NUMERIC) || type.equals(REAL)) {
+        if (isNumeric(type)) {
             ColumnAttributes column = new ColumnAttributes(name, ColumnType.CONTINUOUS);
             matrix.addColumn(column);
         } else if (type.startsWith("{") && type.endsWith("}")) {
@@ -112,5 +110,11 @@ public class ARFFParser {
             }
         }
         matrix.addRow(row);
+    }
+
+    private static boolean isNumeric(String attr) {
+        attr = attr.toLowerCase();
+        return attr.equals("integer") || attr.equals("numeric")
+                || attr.equals("real") || attr.equals("continuous");
     }
 }
