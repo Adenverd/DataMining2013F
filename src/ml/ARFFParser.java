@@ -78,8 +78,8 @@ public class ARFFParser {
                 throw new MLException("Can't parse this:" + line);
         }
 
-        name = line.substring(11, ind - 1);
-        type = line.substring(ind);
+        name = line.substring(11, ind - 1).trim();
+        type = line.substring(ind).trim();
 
         if (isNumeric(type)) {
             ColumnAttributes column = new ColumnAttributes(name, ColumnType.CONTINUOUS);
