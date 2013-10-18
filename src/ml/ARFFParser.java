@@ -29,7 +29,8 @@ public class ARFFParser {
         String line;
 
         while ((line = in.readLine()) != null) {
-            line = line.replaceAll("\\s+", " ");
+            line = line.replaceAll("\\s+", " ").replaceAll("\\{\\s", "{").
+                    replaceAll("\\s\\}", "}").replaceAll(",\\s", ",").replaceAll("\\s,", ",");
             String lineLowercase = line.toLowerCase();
 
             if (lineLowercase.isEmpty() || lineLowercase.startsWith(COMMENT) || lineLowercase.startsWith(RELATION)) {
@@ -59,8 +60,26 @@ public class ARFFParser {
      * @throws MLException if attribute type is not NUMERIC, REAL, or categorical
      */
     private static void getAttributes(Matrix matrix, String line) {
-        String[] sp = line.split(" ");
-        String name = sp[1], type = sp[2].toLowerCase();
+        line = line.toLowerCase();
+        String name, type;
+        int ind = -1;
+
+        if (line.contains("{") && line.contains("}")) {
+            ind = line.indexOf('{');
+        } else {
+            ind = line.lastIndexOf("integer");
+            if (ind == -1)
+                ind = line.lastIndexOf("real");
+            if (ind == -1)
+                ind = line.lastIndexOf("numeric");
+            if (ind == -1)
+                ind = line.lastIndexOf("continuous");
+            if (ind == -1)
+                throw new MLException("Can't parse this:" + line);
+        }
+
+        name = line.substring(11, ind - 1);
+        type = line.substring(ind);
 
         if (isNumeric(type)) {
             ColumnAttributes column = new ColumnAttributes(name, ColumnType.CONTINUOUS);
