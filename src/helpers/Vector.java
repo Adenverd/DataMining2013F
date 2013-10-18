@@ -2,6 +2,8 @@ package helpers;
 
 import ml.*;
 import java.util.*;
+
+import static helpers.Rand.nextInt;
 import static java.lang.Math.*;
 
 /**
@@ -126,6 +128,29 @@ public class Vector {
             pointC.add(scalar * (a + b));
         }
         return pointC;
+    }
+
+    /**
+     * Sample with replacement
+     *
+     * @return arr[2] (same size) with n random data from given features and labels
+     * arr[0] = features
+     * arr[1] = corresponding labels
+     */
+    public static Matrix[] sampleWithReplacement(Matrix features, Matrix labels, int n) {
+        if (features == null || labels == null || features.getNumRows() != labels.getNumRows()) {
+            throw new MLException("No training data or size mismatch.");
+        }
+        Matrix matrices[] = new Matrix[] { new Matrix(features, true),
+                new Matrix(labels, true) };
+
+        int size = features.getNumRows();
+        while (matrices[0].getNumRows() != n) {
+            int rand = nextInt(size);
+            matrices[0].addRow(features.getRow(rand));
+            matrices[1].addRow(labels.getRow(rand));
+        }
+        return matrices;
     }
 
 }
