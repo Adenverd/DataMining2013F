@@ -51,6 +51,27 @@ public abstract class SupervisedLearner {
         return sum;
     }
 
+    /**
+     * Returns the MSE for multiple repetitions of n-fold cross validation. Shuffles in between repetitions.
+     * @param features
+     * @param labels
+     * @param n
+     * @param repetitions
+     * @return
+     */
+    public double repeatNFoldCrossValidation(Matrix features, Matrix labels, int n, int repetitions){
+        Random seed = new Random();
+
+        double mseTotal = 0.0;
+        for (int i = 0; i < repetitions; i++){
+            Matrix shuffledFeatures = features.shuffle(seed);
+            Matrix shuffledLabels = labels.shuffle(seed);
+            mseTotal += this.nFoldCrossValidation(shuffledFeatures, shuffledLabels, n);
+        }
+
+        return mseTotal / repetitions;
+    }
+
     public double nFoldCrossValidation(Matrix features, Matrix labels, int n) {
 
         int rows = features.getNumRows();

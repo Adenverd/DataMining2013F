@@ -330,15 +330,17 @@ public class Matrix {
     /**
      * Randomly shuffles the rows of the matrix
      */
-    public void shuffle() {
-        Collections.shuffle(data);
-    }
+//    public void shuffle() {
+//        Collections.shuffle(data);
+//    }
 
     /**
      * Shuffles the rows with the given random seed
      */
-    public void shuffle(Random rand) {
-        Collections.shuffle(data, rand);
+    public Matrix shuffle(Random rand) {
+        Matrix newMatrix = this.subMatrixRows(0, this.getNumRows()); //create a shallow copy of this matrix
+        Collections.shuffle(newMatrix.getData(), rand);
+        return newMatrix;
     }
 
     /**
