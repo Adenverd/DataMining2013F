@@ -85,7 +85,7 @@ public class ARFFParser {
      *                     of columns in the matrix
      */
     private static void getData(Matrix matrix, String line) {
-        String[] cols = line.split(",");
+        String[] cols = line.toLowerCase().split(",");
         if (matrix.getNumCols() != cols.length) {
             throw new MLException(String.format(
                     "Number of columns mismatch. Expected: %d, Got: %d", matrix.getNumCols(), cols.length));

@@ -378,7 +378,7 @@ public class Matrix {
                 n++;
             }
         }
-        return sum / (n - 1);
+        return n == 1 ? 0 : sum / (n - 1);
     }
 
     /**
