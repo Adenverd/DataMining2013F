@@ -1,6 +1,7 @@
 package ml;
 
 import helpers.MathUtility;
+import helpers.Vector;
 
 import java.util.List;
 import java.util.Random;
@@ -60,12 +61,12 @@ public abstract class SupervisedLearner {
      * @return
      */
     public double repeatNFoldCrossValidation(Matrix features, Matrix labels, int n, int repetitions){
-        Random seed = new Random();
 
         double mseTotal = 0.0;
-        for (int i = 0; i < repetitions; i++){
-            Matrix shuffledFeatures = features.shuffle(seed);
-            Matrix shuffledLabels = labels.shuffle(seed);
+        long seed = System.currentTimeMillis();
+        for (int i = 0; i < repetitions; i++) {
+            Matrix shuffledFeatures = features.shuffle(new Random(seed));
+            Matrix shuffledLabels = labels.shuffle(new Random(seed));
             mseTotal += this.nFoldCrossValidation(shuffledFeatures, shuffledLabels, n);
         }
 
