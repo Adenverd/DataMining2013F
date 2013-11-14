@@ -1,14 +1,21 @@
 package helpers;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import static java.lang.Math.*;
 
 /**
  * Credits:
  * Normal (Gaussian) distribution: http://introcs.cs.princeton.edu/java/22library/Gaussian.java.html
+ * Gamma function: http://introcs.cs.princeton.edu/java/91float/Gamma.java.html
  */
 public class MathUtility {
 
     private static final double EPSILON = 0.001;
+    private static final double sqrt2Pi = sqrt(2 * PI);
 
     public static boolean isEquals(double a, double b) {
         return isEquals(a, b, EPSILON);
@@ -26,11 +33,19 @@ public class MathUtility {
         throw new UnsupportedOperationException("Not implemented");
     }
 
+    public static double sum(List<? extends Number> list) {
+        double sum = 0;
+        for (Number n : list) {
+            sum += n.doubleValue();
+        }
+        return sum;
+    }
+
     /**
      * normal-pdf(x) with mu = 0, stddev = 1
      */
     public static double normalPdf(double x) {
-        return exp(-x * x / 2) / sqrt(2 * PI);
+        return exp(-x * x / 2) / sqrt2Pi;
     }
 
     /**
@@ -82,4 +97,32 @@ public class MathUtility {
                 ? normalInv(y, delta, lo, mid)
                 : normalInv(y, delta, mid, hi);
     }
+
+    /**
+     * inverse-gamma-distribution-pdf(x) with given shape and scale
+     * @url https://en.wikipedia.org/wiki/Inverse_gamma_distribution
+     */
+    public static double inverseGammaPdf(double x, double shape, double scale) {
+        double firstPart = pow(scale, shape);
+        double secondPart = pow(x, -shape - 1);
+        double thirdPart = exp(-scale / x);
+        return firstPart * secondPart * thirdPart / gamma(x);
+    }
+
+    /**
+     * gamma-function(x) using Lanczos approximation formula
+     * @url http://en.wikipedia.org/wiki/Gamma_function
+     */
+    public static double gamma(double x) {
+        return exp(logGamma(x));
+    }
+
+    private static double logGamma(double x) {
+        double tmp = (x - 0.5) * log(x + 4.5) - (x + 4.5);
+        double ser = 1.0 + 76.18009173 / (x + 0) - 86.50532033 / (x + 1)
+                + 24.01409822 / (x + 2) - 1.231739516 / (x + 3)
+                + 0.00120858003 / (x + 4) - 0.00000536382 / (x + 5);
+        return tmp + log(ser * sqrt2Pi);
+    }
+
 }
