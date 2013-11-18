@@ -1,9 +1,6 @@
 package helpers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Math.*;
 
@@ -102,11 +99,11 @@ public class MathUtility {
      * inverse-gamma-distribution-pdf(x) with given shape and scale
      * @url https://en.wikipedia.org/wiki/Inverse_gamma_distribution
      */
-    public static double inverseGammaPdf(double x, double shape, double scale) {
-        double firstPart = pow(scale, shape);
-        double secondPart = pow(x, -shape - 1);
-        double thirdPart = exp(-scale / x);
-        return firstPart * secondPart * thirdPart / gamma(x);
+    public static double inverseGammaPdf(double x, double alpha, double beta) {
+        double firstPart = pow(beta, alpha);
+        double secondPart = pow(x, -alpha - 1);
+        double thirdPart = exp(-beta / x);
+        return firstPart * secondPart * thirdPart / gamma(alpha);
     }
 
     /**
